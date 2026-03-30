@@ -3,6 +3,10 @@ const express = require ("express");
 const { connectDB } = require("./database/connection");
 const app = express ();
 
+// Middleware
+app.use (express.json ());
+app.use (express.urlencoded ({ extended: true }));
+
 // Database connection
 connectDB ();
 
