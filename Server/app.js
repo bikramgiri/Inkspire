@@ -10,9 +10,9 @@ app.use (express.urlencoded ({ extended: true }));
 // Database connection
 connectDB ();
 
-app.get ("/", (req, res) => {
-    res.send ("Hello World!");
-});
+// Routes
+app.use ("/api", require ("./routes/categoryRoutes"));
+app.use ("/api", require ("./routes/blogRoutes"));
 
 const PORT = process.env.PORT;
 app.listen (PORT, () => {

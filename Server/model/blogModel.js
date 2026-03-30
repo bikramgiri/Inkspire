@@ -9,19 +9,19 @@ const blogSchema = new Schema({
   },
   image: {
     type: String,
-    required: true,
-    unique: true,
-  },
-  category: {
-    type: String,
-    required: true,
+    default: null,
   },
   description: {
-    type: Text,
+    type: String,
     required: true,
   },
   author: {
     type: String,
+    default: 'Unknown',
+  },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
     required: true,
   },
   date: {
