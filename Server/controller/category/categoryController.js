@@ -1,5 +1,5 @@
-const Category = require("../model/categoryModel");
-const { deleteImageFromDisk } = require("../services/helper");
+const Category = require("../../model/categoryModel");
+const { deleteImageFromDisk } = require("../../services/helper");
 
 // Add category
 exports.addCategory = async (req, res) => {

@@ -16,11 +16,12 @@ const blogSchema = new Schema({
     required: true,
   },
   author: {
-    type: String,
-    default: 'Unknown',
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
   category: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Category',
     required: true,
   },

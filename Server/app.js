@@ -11,8 +11,9 @@ app.use (express.urlencoded ({ extended: true }));
 connectDB ();
 
 // Routes
-app.use ("/api", require ("./routes/categoryRoutes"));
-app.use ("/api", require ("./routes/blogRoutes"));
+app.use ("/api", require ("./routes/auth/authRoutes"));
+app.use ("/api", require ("./routes/category/categoryRoutes"));
+app.use ("/api", require ("./routes/blog/blogRoutes"));
 
 // Static folder for images
 app.use("/storage", express.static("storage"));

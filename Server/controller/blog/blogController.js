@@ -1,6 +1,6 @@
-const Blog = require("../model/blogModel");
-const Category = require("../model/categoryModel");
-const { deleteImageFromDisk } = require("../services/helper");
+const Blog = require("../../model/blogModel");
+const Category = require("../../model/categoryModel");
+const { deleteImageFromDisk } = require("../../services/helper");
 
 // Add blog
 exports.addBlog = async (req, res) => {
@@ -52,6 +52,7 @@ exports.addBlog = async (req, res) => {
     const blog = await Blog.create({
       title,
       image,
+      author: req.user._id, 
       description,
       category: categoryDoc._id,
     });
@@ -143,7 +144,7 @@ exports.updateBlog = async (req, res) => {
       });
     }
 
-    const existingBlog = await Blog.findById(blogId);
+    const existingBlog = await Blog.findById(blogId).populate("category");
     if (!existingBlog) {
       return res.status(404).json({
         message: "Blog not found",
