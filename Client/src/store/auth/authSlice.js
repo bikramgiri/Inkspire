@@ -81,7 +81,7 @@ export function registerUser(data) {
       return async function registerUserThunk(dispatch) {
             dispatch(setStatus(STATUSES.LOADING))
             try {
-                  const response = await API.post("/auth/register", data)
+                  const response = await API.post("/api/register", data)
                   if (response.status === 201) {
                         dispatch(setStatus(STATUSES.SUCCESS))
                   }
@@ -93,31 +93,11 @@ export function registerUser(data) {
       }
 }
 
-export function verifyEmail(data) {
-  return async function verifyEmailThunk(dispatch) {
-    dispatch(setStatus(STATUSES.LOADING));
-    try {
-      const response = await API.post("/auth/verify-email", data);
-      if (response.status === 200) {
-      dispatch(setEmail(data.email));
-      dispatch(setUser(response.data.data))
-      localStorage.setItem("user", JSON.stringify(response.data.data))
-      dispatch(setToken(response.data.token))
-      dispatch(setStatus(STATUSES.SUCCESS));
-      }
-      console.log("Email verification response:", response);
-    } catch (error) {
-      dispatch(setStatus(STATUSES.ERROR));
-      throw error; 
-    }
-  };
-}
-
 export function loginUser(data) {
       return async function loginUserThunk(dispatch) {
             dispatch(setStatus(STATUSES.LOADING))
             try {
-                  const response = await API.post("/auth/login", data)
+                  const response = await API.post("/api/login", data)
                   if (response.status === 200) {
                         dispatch(setUser(response.data.data))
                         localStorage.setItem("user", JSON.stringify(response.data.data))
@@ -136,7 +116,7 @@ export function forgotPassword(data) {
       return async function forgotPasswordThunk(dispatch) {
             dispatch(setStatus(STATUSES.LOADING));
             try {
-                  const response = await API.post("/auth/forgotpassword", data);
+                  const response = await API.post("/api/forgotpassword", data);
                   dispatch(setEmail(response.data.data));
                   dispatch(setStatus(STATUSES.SUCCESS));
             } catch (error) {
@@ -150,7 +130,7 @@ export function verifyOTP(data) {
       return async function verifyOTPThunk(dispatch) {
             dispatch(setStatus(STATUSES.LOADING));
             try {
-                  const response = await API.post("/auth/verifyotp", data);
+                  const response = await API.post("/api/verifyotp", data);
                   dispatch(setEmail(data.email));
                   dispatch(setStatus(STATUSES.SUCCESS));
                   return response;
@@ -165,7 +145,7 @@ export function resetPassword(data) {
       return async function resetPasswordThunk(dispatch) {
             dispatch(setStatus(STATUSES.LOADING));
             try {
-                  const response = await API.post("/auth/resetpassword", data);
+                  const response = await API.post("/api/resetpassword", data);
                   dispatch(setStatus(STATUSES.SUCCESS));
                   return response;
             } catch (error) {

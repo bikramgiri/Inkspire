@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { X, CheckCircle, AlertCircle, Info } from 'lucide-react';
-import { setToastAdder, clearToastAdder } from '../../../utils/toast'; 
+import { clearToastAdder, setToastAdder } from '../utils/toast';
 
 export function ToastContainer() {
   const [toasts, setToasts] = useState([]);
