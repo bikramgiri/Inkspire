@@ -1,7 +1,14 @@
 require ("dotenv").config ();
 const express = require ("express");
-const { connectDB } = require("./database/connection");
 const app = express ();
+const cors = require ("cors");
+const { connectDB } = require("./database/connection");
+
+// Cors
+app.use(cors({
+      origin: ["http://localhost:5173", "http://localhost:5174"],
+      credentials: true
+}))
 
 // Middleware
 app.use (express.json ());
