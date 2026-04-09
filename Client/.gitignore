@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+HomeOld.jsx
 dist
 dist-ssr
 *.local

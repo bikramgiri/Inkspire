@@ -1,10 +1,28 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './pages/home/Home'
+import Layout from './layout/Layout'
+import NotFound from './components/NotFound'
 
 function App() {
 
   return ( 
-    <div className="text-blue-700 text-xl font-medium">
-      Hello World!
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+            <Route 
+            index 
+            element={ 
+            <Home /> 
+            } />
+            <Route 
+            path="*" 
+            element={
+              <NotFound />
+              } 
+            />
+          </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
