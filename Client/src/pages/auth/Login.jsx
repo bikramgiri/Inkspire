@@ -9,8 +9,7 @@ import { STATUSES } from "../../global/status";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {status, token, user} = useSelector((state) => state.auth); //data: user
-
+  const {status} = useSelector((state) => state.auth); 
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -192,7 +191,7 @@ const Login = () => {
       }, 0); 
       dispatch(resetAuthStatus());
     }
-  }, [navigate, status, errors, token, user, dispatch]);
+  }, [navigate, status, errors, dispatch]);
 
   useEffect(() => {
     dispatch(resetAuthStatus());
