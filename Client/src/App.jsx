@@ -5,6 +5,9 @@ import NotFound from "./components/NotFound";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import { ToastContainer } from "./components/ToastContainer";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import VerifyOTP from "./pages/auth/VerifyOTP";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
         </Route>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify-otp" element={<VerifyOTP />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
 
       <ToastContainer />
