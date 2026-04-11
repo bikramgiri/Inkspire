@@ -8,6 +8,7 @@ import { ToastContainer } from "./components/ToastContainer";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import VerifyOTP from "./pages/auth/VerifyOTP";
 import ResetPassword from "./pages/auth/ResetPassword";
+import SingleBlog from "./pages/blog/SingleBlog";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
                 <Home />
               } 
           />
+          <Route path="/blog/:id" element={<SingleBlog />} />
           <Route path="*" element={<NotFound />} />
         </Route>
           <Route path="/register" element={<Register />} />

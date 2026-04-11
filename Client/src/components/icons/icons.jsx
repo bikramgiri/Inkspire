@@ -146,3 +146,32 @@ export const GridIcon = () => (
     <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
   </svg>
 );
+
+export const ThumbnailPlaceholder = () => (
+  <div className="w-28 h-20 sm:w-36 sm:h-24 flex-shrink-0 rounded-sm overflow-hidden bg-gray-900 flex items-center justify-center relative">
+    <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-gray-900 to-gray-900 opacity-90" />
+    <div className="relative flex items-center justify-center gap-1">
+      <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M74.5 6.5L50 44 25.5 6.5 6.5 15.5 30 50 6.5 84.5 25.5 93.5 50 56 74.5 93.5 93.5 84.5 70 50 93.5 15.5 74.5 6.5Z" fill="#0078D4" />
+        <path d="M74.5 6.5L50 44V56l24.5 37.5 19-9L70 50l23.5-34.5-19-9Z" fill="#1B9EEB" />
+      </svg>
+      <span className="text-white text-xl font-bold ml-1">🦙</span>
+    </div>
+  </div>
+);
+
+
+export const DislikeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z" />
+    <path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
+  </svg>
+);
+
+export const ShareIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+    <polyline points="16 6 12 2 8 6" />
+    <line x1="12" y1="2" x2="12" y2="15" />
+  </svg>
+);
