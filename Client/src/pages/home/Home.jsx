@@ -59,7 +59,7 @@ export default function Home() {
               );
             }
 
-            const initials = blog.author?.charAt(0).toUpperCase() || "U";
+            const initials = blog.author?.username.charAt(0).toUpperCase() || "U";
 
             return (
               <div

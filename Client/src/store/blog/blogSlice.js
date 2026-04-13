@@ -23,18 +23,18 @@ const blogSlice = createSlice({
     },
     deleteBlogById: (state, action) => {
       state.blogs = state.blogs.filter(
-            (blog) => blog.id !== action.payload);
+            (blog) => blog._id !== action.payload);
     },
-    updateBlog: (state, action) => {
+    updateBlogInList: (state, action) => {
       const index = state.blogs.findIndex(
-        (blog) => blog.id === action.payload.id,
+        (blog) => blog._id === action.payload._id,
       );
       if (index !== -1) {
         state.blogs[index] = action.payload;
       }
     },
     emptyBlogs: (state) => {
-      state.blogs = null;
+      state.blogs = [];
     },
   },
 });
@@ -44,7 +44,7 @@ export const {
   setStatus,
   setSingleBlog,
   deleteBlogById,
-  updateBlog,
+  updateBlogInList,
   emptyBlogs,
 } = blogSlice.actions;
 export default blogSlice.reducer;
@@ -55,7 +55,7 @@ export function addBlog(data) {
     try {
       const response = await APIAuthenticated.post("/api/blog", data);
       if (response.status === 201) {
-        dispatch(setBlogs(response.data.data));
+        // dispatch(setBlogs(response.data.data));
         dispatch(setStatus(STATUSES.SUCCESS));
         dispatch(fetchBlogs());
       }
@@ -106,7 +106,7 @@ export function fetchSingleBlog(blogId) {
   return async function fetchSingleBlogThunk(dispatch, getState) {
     const state = getState();
     const blogs = state.blog.blogs;
-    const existBlog = blogs.find((blog) => blog.id === blogId);
+    const existBlog = blogs.find((blog) => blog._id === blogId);
     if (existBlog) {
       dispatch(setSingleBlog(existBlog));
       dispatch(setStatus(STATUSES.SUCCESS));
@@ -135,8 +135,8 @@ export function editBlog(payload) {
         payload.data,
       );
       if (response.status === 200) {
-        // dispatch(updateBlog(response.data.data));
-        dispatch(setBlogs(response.data.data));
+        dispatch(updateBlogInList(response.data.data)); // Update the blog in the list
+        dispatch(setSingleBlog(response.data.data)); // Update the single blog view if open
         dispatch(setStatus(STATUSES.SUCCESS));
       }
     } catch (error) {

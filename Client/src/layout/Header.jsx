@@ -4,8 +4,11 @@ import DropdownUser from "../components/Header/DropdownUser";
 import DropdownNotifications from "../components/Header/DropDownNotifications";
 import { X } from "lucide-react";
 import { BsSearch } from "react-icons/bs";
+import { WriteIcon } from "../components/icons/icons";
+import { useNavigate } from "react-router-dom";
 
 const Header= () => {
+  const navigate = useNavigate();
   const { isMobileOpen, toggleMobileSidebar, toggleSidebar} = useSidebar();
   const [showSearch, setShowSearch] = useState(false);
   const searchRef = useRef(null);
@@ -107,6 +110,13 @@ const Header= () => {
         {/* Right side: actions (always visible) */}
         <div className="flex items-center gap-4 sm:gap-6">
           <DropdownNotifications />
+          <button 
+          // make navigate to /write on click
+          onClick={() => navigate ("/add-blog")}
+          className="cursor-pointer hidden md:flex border-2 border-gray-400 p-1.5 rounded-md items-center gap-1.5 text-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
+          <WriteIcon />
+          <span>Write</span>
+        </button>
           <DropdownUser />
         </div>
       </div>

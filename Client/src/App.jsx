@@ -9,6 +9,8 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import VerifyOTP from "./pages/auth/VerifyOTP";
 import ResetPassword from "./pages/auth/ResetPassword";
 import SingleBlog from "./pages/blog/SingleBlog";
+import AddBlog from "./pages/blog/AddBlog";
+import EditBlog from "./pages/blog/EditBlog";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
               } 
           />
           <Route path="/blog/:id" element={<SingleBlog />} />
+          <Route path="/add-blog" element={<AddBlog />} />
+          <Route path="/edit-blog/:id" element={<EditBlog />} />
           <Route path="*" element={<NotFound />} />
         </Route>
           <Route path="/register" element={<Register />} />

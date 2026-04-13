@@ -1,228 +1,101 @@
-import React from "react";
-import {
-  BookmarkIcon,
-  ClapIcon,
-  CommentIcon,
-  DislikeIcon,
-  MoreIcon,
-  StarIcon,
-  ThumbnailPlaceholder,
-} from "../icons/icons";
-import { Bookmark, Calendar, MessageSquare, ThumbsUp } from "lucide-react";
-
-// const ArticleCard = ({ article }) => {
-
-//   return (
-//     <div className="py-6 border-b border-gray-100 flex gap-4">
-//       <div className="flex-1">
-//         {article.publication && (
-//           <div className="flex items-center gap-1.5 mb-3">
-//             <span className={`w-5 h-5 rounded-sm text-xs font-bold flex items-center justify-center ${article.pubColor}`}>
-//               {article.pubIcon}
-//             </span>
-//             {/* <span className="text-sm text-gray-600">
-//               In <span className="font-medium">{article.publication}</span>
-//             </span> */}
-//             <span className="text-md font-medium text-gray-600">By {article.author}</span>
-//           </div>
-//         )}
-
-//         <h2 className="text-xl font-bold text-gray-900 leading-snug mb-2 hover:underline cursor-pointer line-clamp-2">
-//           {article.title}
-//         </h2>
-//         <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 hidden md:block">
-//           {article.subtitle}
-//         </p>
-
-//         {/* Meta */}
-//         <div className="flex items-center gap-3 mt-4 text-gray-400 text-xs">
-//           {article.isPremium && <Calendar className='h-4.5 w-4.5' />}
-//           <span className="text-gray-500">{article.date}</span>
-//           <span className="text-gray-200">·</span>
-//           {/* <button className="flex items-center gap-1 hover:text-gray-600 transition-colors">
-//             <ClapIcon />
-//             <span>{article.claps}</span>
-//           </button> */}
-//           <button className="cursor-pointer flex items-center gap-1 hover:text-gray-600 transition-colors">
-//             <CommentIcon />
-//             <span>{article.comments}</span>
-//           </button>
-//           <div className="flex-1"/>
-//           <button className="hover:text-gray-600 p-1 transition-colors"><BookmarkIcon /></button>
-//           <button className="hover:text-gray-600 p-1 transition-colors"><MoreIcon /></button>
-//         </div>
-//       </div>
-
-//       {/* Thumbnail */}
-//       <div
-//         className="w-32 h-24 sm:w-40 sm:h-28 rounded shrink-0 flex items-center justify-center overflow-hidden"
-//         style={{ backgroundColor: article.imageBg }}
-//       >
-//         {article.hasLevels ? (
-//           <div className="flex gap-0.5 p-1">
-//             {["LEVEL 1", "LEVEL 2", "PRO"].map((l, i) => (
-//               <div key={i} className="bg-white/10 border border-white/30 rounded p-1 text-white text-[8px] font-bold text-center">
-//                 {l}
-//               </div>
-//             ))}
-//           </div>
-//         ) : article.imageText ? (
-//           <div className="text-white font-black text-lg text-center px-2 leading-tight" style={{ fontFamily: "Georgia, serif" }}>
-//             {article.imageText}
-//           </div>
-//         ) : (
-//           <div className="text-4xl">{article.imageEmoji}</div>
-//         )}
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default ArticleCard
-
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-// const BookmarkIcon = () => (
-//   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-//     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-//   </svg>
-// );
-
-// const MoreIcon = () => (
-//   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-//     <circle cx="5" cy="12" r="2" />
-//     <circle cx="12" cy="12" r="2" />
-//     <circle cx="19" cy="12" r="2" />
-//   </svg>
-// );
-
-// const DislikeIcon = () => (
-//   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-//     <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z" />
-//     <path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
-//   </svg>
-// );
-
-// const ClapIcon = () => (
-//   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-//     <path d="M11.37 2.5c.28-.53.73-.88 1.24-.88.96 0 1.57.96 1.57 1.97v4.04l1.04-3.34c.27-.85 1.07-1.37 1.87-1.13.8.24 1.24 1.08.97 1.93l-.9 2.9.22-.08c.8-.29 1.66.17 1.91.99.25.83-.18 1.7-.98 1.99l-.21.07.12.04c.8.24 1.24 1.09.97 1.93-.22.72-.88 1.18-1.57 1.18l.06.22c.23.82-.21 1.67-1 1.91-1.2.36-2.93-.11-4.19-1.1l-.22-.18v2.25c0 1.04-.82 1.78-1.78 1.78s-1.78-.74-1.78-1.78V9.97l-.56.48c-.63.55-1.57.47-2.09-.18-.52-.65-.43-1.63.2-2.18l4.11-3.55V2.5z" />
-//   </svg>
-// );
-
-// const CommentIcon = () => (
-//   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-//     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-//   </svg>
-// );
-
-// const StarIcon = () => (
-//   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#FFC017" stroke="#FFC017" strokeWidth="1">
-//     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-//   </svg>
-// );
-
-// const ThumbnailPlaceholder = () => (
-//   <div className="w-28 h-20 sm:w-36 sm:h-24 flex-shrink-0 rounded-sm overflow-hidden bg-gray-900 flex items-center justify-center relative">
-//     <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-gray-900 to-gray-900 opacity-90" />
-//     <div className="relative flex items-center justify-center gap-1">
-//       <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-//         <path d="M74.5 6.5L50 44 25.5 6.5 6.5 15.5 30 50 6.5 84.5 25.5 93.5 50 56 74.5 93.5 93.5 84.5 70 50 93.5 15.5 74.5 6.5Z" fill="#0078D4" />
-//         <path d="M74.5 6.5L50 44V56l24.5 37.5 19-9L70 50l23.5-34.5-19-9Z" fill="#1B9EEB" />
-//       </svg>
-//       <span className="text-white text-xl font-bold ml-1">🦙</span>
-//     </div>
-//   </div>
-// );
+import { Bookmark, Calendar, MessageSquare, ThumbsUp } from "lucide-react";
+import { ThumbnailPlaceholder } from "../icons/icons";
+import BlogCardDropdown from "./BlogCardDropdown";
+import { deleteBlog } from "../../store/blog/blogSlice";
+import { toast } from "../../utils/toast";
 
 export default function BlogCard({ blog, renderAvatar }) {
   const navigate = useNavigate();
-  const [bookmarked, setBookmarked] = useState(false);
-  // const [disliked, setDisliked] = useState(false);
+  const dispatch = useDispatch();
+  const [bookmarked,    setBookmarked]    = useState(false);
+  const [dropdownOpen,  setDropdownOpen]  = useState(false);
+  const [,    setIsDeleting]    = useState(false);
 
-  // date formatting
-  const formattedDate = new Date(blog.date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  const formattedDate = blog.date
+    ? new Date(blog.date).toLocaleDateString("en-US", {
+        month: "short", day: "numeric", year: "numeric",
+      })
+    : "—";
+
+  const handleEdit = () => {
+    navigate(`/edit-blog/${blog._id}`);
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this blog?")) return;
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteBlog(blog._id));
+      toast("Blog deleted successfully.", "success");
+    } catch {
+      toast("Failed to delete blog.", "error");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className="w-full bg-white border-b border-gray-200 py-6 px-0 cursor-pointer group">
       {/* Author row */}
       <div className="flex gap-6 items-center mb-3">
         <div className="flex items-center gap-2">
-           {renderAvatar("large")}
+          {renderAvatar("large")}
           <span className="text-sm font-medium text-gray-800 hover:underline">
-            {blog.author || "Unknown Author"}
+            {blog.author?.username || "Unknown Author"}
           </span>
         </div>
-        <span className="text-gray-600 rounded-lg px-2.5 text-md border border-gray-400 bg-gray-50 hover:bg-gray-100 font-medium">
+        <span className="text-gray-600 rounded-lg px-2.5 text-md border border-gray-400 bg-gray-50 hover:bg-gray-100 font-medium cursor-pointer">
           Follow
         </span>
       </div>
 
       {/* Card body */}
-      <div 
-      onClick={() => navigate (`/blog/${blog._id}`)}
-      className="flex items-start gap-4 justify-between">
-        {/* Left: title + subtitle */}
+      <div
+        onClick={() => navigate(`/blog/${blog._id}`)}
+        className="flex items-start gap-4 justify-between"
+      >
+        {/* Left: title + description */}
         <div className="flex-1 min-w-0">
           <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug mb-1 group-hover:text-gray-700 transition-colors line-clamp-3 hover:underline cursor-pointer">
             {blog.title}
           </h2>
+          {/* Strip HTML tags from description for preview */}
           <p className="text-md text-gray-700 line-clamp-2 hidden sm:block">
-            {blog.description.length > 400
-              ? blog.description.substring(0, 400) + "..."
-              : blog.description}
+            {blog.description
+              ? blog.description.replace(/<[^>]*>/g, "").substring(0, 400)
+              : ""}
           </p>
-          <div className="flex items-center justify-between mt-6">
-            {/* Left: date, claps, comments */}
-            <div className="flex items-center gap-4 text-gray-500 text-sm">
-              {/* {blog.isMemberOnly && (
-                <span className="flex gap-1 items-center">
-                  <Calendar className="h-4.5 w-4.5" />
-                  <span className="text-gray-500">{blog.date || "Mar 15, 2025"}</span>
-                </span>
-              )} */}
 
-                <span className="flex gap-1 items-center">
-                  <Calendar className="h-4.5 w-4.5" />
-                  <span className="text-gray-500">{formattedDate || "Mar 15, 2025"}</span>
-                </span>
+          <div className="flex items-center justify-between mt-6">
+            {/* Left: date, likes, comments */}
+            <div className="flex items-center gap-4 text-gray-500 text-sm">
+              <span className="flex gap-1 items-center">
+                <Calendar className="h-4 w-4" />
+                <span>{formattedDate}</span>
+              </span>
 
               <button
                 className="cursor-pointer flex items-center gap-1 hover:text-gray-800 transition-colors"
-                // onClick={(e) => e.stopPropagation()} // Prevent card click when clicking on claps or comments
+                onClick={(e) => e.stopPropagation()}
               >
-                <ThumbsUp className="h-4.5 w-4.5" />
-                <span className="text-gray-500 text-md hover:text-gray-800 transition-colors">{blog.claps || 58}</span>
+                <ThumbsUp className="h-4 w-4" />
+                <span>{blog.claps || 8}</span>
               </button>
 
               <button
                 className="cursor-pointer flex items-center gap-1 hover:text-gray-800 transition-colors"
-                // onClick={(e) => e.stopPropagation()} // Prevent card click when clicking on claps or comments
+                onClick={(e) => e.stopPropagation()}
               >
-                <MessageSquare className="h-4.5 w-4.5" />
-                <span className="text-gray-500 text-md hover:text-gray-800 transition-colors">{blog.comments || 12}</span>
+                <MessageSquare className="h-4 w-4" />
+                <span>{blog.comments?.length || 3}</span>
               </button>
             </div>
 
-            {/* Right: action buttons */}
+            {/* Right: bookmark + dropdown */}
             <div className="flex items-center gap-0.5 text-gray-400">
-              {/* <button
-            className={`p-2 rounded-full hover:bg-gray-100 transition-colors ${
-              disliked ? "text-gray-700" : ""
-            }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              setDisliked((d) => !d);
-            }}
-            title="Not interested"
-          >
-            <DislikeIcon />
-          </button> */}
-
               <button
                 className={`cursor-pointer p-2 rounded-full hover:bg-gray-100 transition-colors ${
                   bookmarked ? "text-gray-900" : ""
@@ -236,19 +109,19 @@ export default function BlogCard({ blog, renderAvatar }) {
                 <Bookmark />
               </button>
 
-              {/* <button
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-            onClick={(e) => e.stopPropagation()}
-            title="More options"
-          >
-            <MoreIcon />
-          </button> */}
+              <BlogCardDropdown
+                isOpen={dropdownOpen}
+                onToggle={() => setDropdownOpen((prev) => !prev)}
+                onClose={() => setDropdownOpen(false)}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
             </div>
           </div>
         </div>
 
         {/* Right: thumbnail */}
-        {blog.image ? (
+        {blog.imageUrl || blog.image ? (
           <img
             src={blog.imageUrl || blog.image}
             alt="Blog thumbnail"
