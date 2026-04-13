@@ -77,7 +77,9 @@ exports.addBlog = async (req, res) => {
 // Fetch all blogs
 exports.fetchAllBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find().populate("category");
+    const blogs = await Blog.find()
+    .populate("category")
+    .populate("author", "username avatar"); // populate author username and avatar
 
     // Append image URL to each blog
     const blogsWithImageUrl = blogs.map((blog) => ({
@@ -108,7 +110,9 @@ exports.fetchBlog = async (req, res) => {
       });
     }
 
-    const blog = await Blog.findById(blogId).populate("category");
+    const blog = await Blog.findById(blogId)
+    .populate("category")
+    .populate("author", "username avatar"); // populate author username and avatar
     if (!blog) {
       return res.status(404).json({
         message: "Blog not found",
@@ -144,7 +148,7 @@ exports.updateBlog = async (req, res) => {
       });
     }
 
-    const existingBlog = await Blog.findById(blogId).populate("category");
+    const existingBlog = await Blog.findById(blogId).populate("category").populate("author", "username avatar");
     if (!existingBlog) {
       return res.status(404).json({
         message: "Blog not found",
@@ -184,6 +188,13 @@ exports.updateBlog = async (req, res) => {
     else {
       newImage = existingBlog.image; // fallback to existing image if no new image is uploaded
       newImageUrl = `${process.env.BACKEND_URL}/storage/${existingBlog.image}`;
+    }
+
+    // REMOVE EXISTING IMAGE
+    if (req.body.imageToRemove) {
+      const imageToRemove = req.body.imageToRemove;
+      // Delete from disk
+        deleteImageFromDisk(imageToRemove);
     }
 
     let categoryId;
