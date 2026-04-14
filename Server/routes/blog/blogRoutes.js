@@ -1,4 +1,4 @@
-const { addBlog, fetchAllBlogs, fetchBlog, updateBlog, deleteBlog } = require("../../controller/blog/blogController");
+const { addBlog, fetchAllBlogs, fetchBlog, updateBlog, deleteBlog, fetchMyBlogs } = require("../../controller/blog/blogController");
 const isAuthenticated = require("../../middleware/authMiddleware");
 const { upload } = require("../../middleware/multerConfig");
 const catchError = require("../../services/catchError");
@@ -14,6 +14,8 @@ router.route("/blog/:id")
 .patch(isAuthenticated, upload.single('image'), catchError(updateBlog))
 .delete(isAuthenticated, catchError(deleteBlog));
 
+router.route("/my-blog")
+.get(isAuthenticated, catchError(fetchMyBlogs));
 
 
 module.exports = router;

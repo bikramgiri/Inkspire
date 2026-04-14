@@ -25,9 +25,9 @@ exports.addBlog = async (req, res) => {
       });
     }
 
-    if (description.length < 5 || description.length > 3000) {
+    if (description.length < 5 || description.length > 8000) {
       return res.status(400).json({
-        message: "Blog description must be between 5 and 3000 characters",
+        message: "Blog description must be between 5 and 8000 characters",
         field: "description",
       });
     }
@@ -87,6 +87,10 @@ exports.fetchAllBlogs = async (req, res) => {
       imageUrl: `${process.env.BACKEND_URL}/storage/${blog.image}`,
       category: blog.category?.categoryName
     }));
+    // Sort blogs by createdAt in descending order (newest first)
+    blogsWithImageUrl.sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
 
     res.status(200).json({
       message: "Blogs fetched successfully",
@@ -137,6 +141,42 @@ exports.fetchBlog = async (req, res) => {
   }
 };
 
+// Fetch my blogs
+exports.fetchMyBlogs = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    if (!userId) {
+      return res.status(401).json({ 
+        message: "User not authenticated",
+        field: "userId"
+      });
+    }
+
+    const blogs = await Blog.find({ author: userId })
+    .populate("category")
+    .populate("author", "username avatar"); 
+
+    // Append image URL to each blog
+    const blogsWithImageUrl = blogs.map((blog) => ({
+      ...blog.toJSON(),
+      imageUrl: `${process.env.BACKEND_URL}/storage/${blog.image}`,
+      category: blog.category?.categoryName
+    }));
+    blogsWithImageUrl.sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+
+    res.status(200).json({
+      message: "My blogs fetched successfully",
+      count: blogs.length,
+      data: blogsWithImageUrl,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // Update blog
 exports.updateBlog = async (req, res) => {
   try {
@@ -165,9 +205,9 @@ exports.updateBlog = async (req, res) => {
       });
     }
 
-    if (description && (description.length < 5 || description.length > 3000)) {
+    if (description && (description.length < 5 || description.length > 8000)) {
       return res.status(400).json({
-        message: "Blog description must be between 5 and 3000 characters",
+        message: "Blog description must be between 5 and 8000 characters",
         field: "description",
       });
     }

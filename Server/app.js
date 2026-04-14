@@ -21,6 +21,7 @@ connectDB ();
 app.use ("/api", require ("./routes/auth/authRoutes"));
 app.use ("/api", require ("./routes/category/categoryRoutes"));
 app.use ("/api", require ("./routes/blog/blogRoutes"));
+app.use ("/api", require ("./routes/library/libraryRoutes"));
 
 // Static folder for images
 app.use("/storage", express.static("storage"));

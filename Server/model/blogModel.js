@@ -25,10 +25,6 @@ const blogSchema = new Schema({
     ref: 'Category',
     required: true,
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
 },
  { timestamps: true },
 );
