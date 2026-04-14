@@ -11,6 +11,8 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import SingleBlog from "./pages/blog/SingleBlog";
 import AddBlog from "./pages/blog/AddBlog";
 import EditBlog from "./pages/blog/EditBlog";
+import Library from "./pages/library/Library";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="/blog/:id" element={<SingleBlog />} />
           <Route path="/add-blog" element={<AddBlog />} />
           <Route path="/edit-blog/:id" element={<EditBlog />} />
+          <Route path="/library" element={<Library />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Route>
           <Route path="/register" element={<Register />} />

@@ -4,14 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchBlogs } from "../../store/blog/blogSlice";
 import { STATUSES } from "../../global/status";
 import { Loader2 } from "lucide-react";
+import { AddToLibrary, fetchUserLibrary, removeFromLibrary } from "../../store/library/librarySlice";
+import { toast } from "../../utils/toast";
 
 export default function Home() {
   const dispatch = useDispatch();
   const { blogs, status } = useSelector((state) => state.blog);
+  const {library} = useSelector((state) => state.library);
   const [activeTab, setActiveTab] = useState("for-you");
 
   useEffect(() => {
     dispatch(fetchBlogs());
+    dispatch(fetchUserLibrary());
   }, [dispatch]);
 
   if (status === STATUSES.LOADING) {
@@ -59,7 +63,8 @@ export default function Home() {
               );
             }
 
-            const initials = blog.author?.username.charAt(0).toUpperCase() || "U";
+            const initials =
+              blog.author?.username.charAt(0).toUpperCase() || "U";
 
             return (
               <div
@@ -69,9 +74,35 @@ export default function Home() {
               </div>
             );
           };
+
+           const isLibraried = library.some(
+              // Check if the current blog is in the library
+              (lib) =>
+                lib._id === blog._id || lib.id === blog._id,
+            );
+
+            const handleLibraryToggle = () => {
+              try {
+                if (isLibraried) {
+                dispatch(removeFromLibrary(blog._id));
+                toast("Blog removed from library.", "success");
+              } else {
+                dispatch(AddToLibrary(blog._id));
+                toast("Blog added to library.", "success");
+              }
+              } catch {
+                toast("Something went wrong.", "error");
+              }
+            };
+
           return (
             <div key={blog._id || blog.id}>
-              <BlogCard blog={blog} renderAvatar={renderAvatar} />
+              <BlogCard 
+                blog={blog} 
+                renderAvatar={renderAvatar} 
+                isLibraried={isLibraried}
+                handleLibraryToggle={handleLibraryToggle} 
+              />
             </div>
           );
         })}

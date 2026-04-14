@@ -126,6 +126,25 @@ export function fetchSingleBlog(blogId) {
   };
 }
 
+// *Fetch My Blogs
+export function fetchMyBlogs() {
+  return async function fetchMyBlogsThunk(dispatch) {
+    dispatch(setStatus(STATUSES.LOADING));
+    try {
+      const response = await APIAuthenticated.get("/api/my-blog");
+      if (response.status === 200) {
+        dispatch(setBlogs(response.data.data));
+        dispatch(setStatus(STATUSES.SUCCESS));
+      }
+    } catch (error) {
+      console.log("Failed to fetch my blogs:", error);
+      dispatch(setStatus(STATUSES.ERROR));
+      throw error;
+    }
+  };
+}
+
+// *Edit Blog
 export function editBlog(payload) {
   return async function editBlogThunk(dispatch) {
     dispatch(setStatus(STATUSES.LOADING));

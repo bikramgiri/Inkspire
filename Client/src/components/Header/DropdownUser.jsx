@@ -119,16 +119,16 @@ const DropdownUser = () => {
           </div>
 
           <div className="py-2">
-            <Link
-              to="/admin-dashboard/profile"
+            {/* <Link
+              to="/profile"
               className="flex gap-3 items-center px-5 py-2.5 text-gray-900 hover:bg-blue-50 hover:text-blue-700 transition-colors"
               onClick={() => setDropdownOpen(false)}
             >
               <CgProfile className="h-6 w-6" />
               Profile
-            </Link>
+            </Link> */}
             <Link
-              to="/admin-dashboard/settings"
+              to="/settings"
               className="flex gap-3 items-center px-5 py-2.5 text-gray-900 hover:bg-blue-50 hover:text-blue-700 transition-colors"
               onClick={() => setDropdownOpen(false)}
             >

@@ -5,18 +5,21 @@ import { fetchSingleBlog } from "../../store/blog/blogSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { AddToLibrary, fetchUserLibrary, removeFromLibrary } from "../../store/library/librarySlice";
+import { toast } from "../../utils/toast";
 
 export default function SingleBlog() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { singleBlog: blog, status } = useSelector((state) => state.blog);
+  const {library} = useSelector((state) => state.library);
 
-  const [clapped,    setClapped]    = useState(false);
-  const [claps,      setClaps]      = useState(0);
-  const [bookmarked, setBookmarked] = useState(false);
+  const [clapped, setClapped]    = useState(false);
+  const [claps, setClaps]      = useState(0);
 
   useEffect(() => {
     dispatch(fetchSingleBlog(id));
+    dispatch(fetchUserLibrary());
   }, [dispatch, id]);
 
   // Sync clap count when blog loads
@@ -29,7 +32,7 @@ export default function SingleBlog() {
     setClaps((n) => (clapped ? n - 1 : n + 1));
   };
 
-  /* ── loading / empty ── */
+  /* loading / empty  */
   if (status === STATUSES.LOADING || !blog || !blog._id) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -47,7 +50,6 @@ export default function SingleBlog() {
   const commentCount = Array.isArray(blog.comments) ? blog.comments.length : 0;
 
   /* ── avatar renderer ── */
-  // FIX: blog.author is an object {name, avatar} — not a string
   const renderAvatar = (size) => {
     const dim  = size === "small" ? "w-10 h-10 text-xl" : "w-12 h-12 text-2xl";
     if (blog.author?.avatar) {
@@ -68,6 +70,26 @@ export default function SingleBlog() {
       </div>
     );
   };
+
+    const isLibraried = library.some(
+                // Check if the current blog is in the library
+                (lib) =>
+                  lib._id === blog._id || lib.id === blog._id,
+              );
+  
+              const handleLibraryToggle = () => {
+                try {
+                  if (isLibraried) {
+                  dispatch(removeFromLibrary(blog._id));
+                  toast("Blog removed from library.", "success");
+                } else {
+                  dispatch(AddToLibrary(blog._id));
+                  toast("Blog added to library.", "success");
+                }
+                } catch {
+                  toast("Something went wrong.", "error");
+                }
+              };
 
   return (
     <>
@@ -94,7 +116,6 @@ export default function SingleBlog() {
 
       <div className="bg-white font-serif">
         <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-
           {/* Title */}
           <h1
             className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-6 tracking-tight"
@@ -116,7 +137,9 @@ export default function SingleBlog() {
                   Follow
                 </button>
               </div>
-              <span className="text-sm text-gray-500 mt-0.5">{formattedDate}</span>
+              <span className="text-sm text-gray-500 mt-0.5">
+                {formattedDate}
+              </span>
             </div>
           </div>
 
@@ -136,24 +159,33 @@ export default function SingleBlog() {
             <div className="flex items-center gap-4 text-gray-500">
               <button
                 onClick={handleClap}
-                className={`flex items-center gap-1.5 transition-colors hover:text-gray-800 ${clapped ? "text-gray-900" : ""}`}
+                className={`cursor-pointer flex items-center gap-1.5 transition-colors hover:text-gray-800 ${clapped ? "text-gray-900" : ""}`}
               >
                 <ThumbsUp className="w-5 h-5" />
                 <span className="text-sm">{claps || 8}</span>
               </button>
-              <button className="flex items-center gap-1.5 hover:text-gray-800 transition-colors">
+              <button className="cursor-pointer flex items-center gap-1.5 hover:text-gray-800 transition-colors">
                 <MessageSquare className="w-5 h-5" />
                 <span className="text-sm">{commentCount || 2}</span>
               </button>
             </div>
             <div className="flex items-center gap-1 text-gray-500">
               <button
-                onClick={() => setBookmarked((b) => !b)}
-                className={`p-2 rounded-full hover:bg-gray-100 transition-colors ${bookmarked ? "text-gray-900" : ""}`}
+                onClick={handleLibraryToggle}
+                title={isLibraried ? "Remove from library" : "Save to library"}
+                className={`cursor-pointer p-2 rounded-full hover:bg-gray-100 transition-colors ${
+                  isLibraried
+                    ? "text-gray-900"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
               >
-                <Bookmark className="w-5 h-5" />
+                <Bookmark
+                  className="w-5 h-5 transition-all duration-150"
+                  fill={isLibraried ? "currentColor" : "none"}
+                  strokeWidth={isLibraried ? 0 : 2}
+                />
               </button>
-              <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+              <button className="cursor-pointer p-2 rounded-full hover:bg-gray-100 transition-colors">
                 <ShareIcon className="w-5 h-5" />
               </button>
             </div>

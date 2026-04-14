@@ -202,7 +202,7 @@ const getPasswordStrength = () => {
     useEffect(() => {
     if (status === STATUSES.SUCCESS) {
       setTimeout(() => {
-        toast("Registration successful! Please check your email to verify your account.", 'success');
+        toast("Registration successful!", 'success');
         setTimeout(() => {
           navigate("/login");
         }, 2000);

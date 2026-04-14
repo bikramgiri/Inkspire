@@ -9,7 +9,7 @@ const navItems = [
   { icon: <Home />, name: "Home", path: "/" },
   { icon: <LibraryIcon />, name: "Library", path: "/library" },
   { icon: <UserCircle2Icon />, name: "Profile", path: "/profile" },
-  { icon: <StatsIcon />, name: "Stats", path: "/stats" },
+  // { icon: <StatsIcon />, name: "Stats", path: "/stats" },
 ];
 
 const Sidebar = () => {
